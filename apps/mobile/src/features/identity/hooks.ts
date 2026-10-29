@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { completeOnboarding, fetchMyProfile, fetchProfileByUsername } from './api';
+import { completeOnboarding, fetchMyProfile, fetchProfileByUsername, updateProfile } from './api';
 import { routeState, type RouteState } from './route-state';
-import type { OnboardingInput } from './schemas';
+import type { OnboardingInput, ProfileUpdate } from './schemas';
 import { useSession } from './session';
 
 export const profileKeys = {
@@ -57,6 +57,15 @@ export function useCompleteOnboarding() {
   const invalidate = useInvalidateProfiles();
   return useMutation({
     mutationFn: (input: OnboardingInput) => completeOnboarding(userId!, input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useUpdateProfile() {
+  const userId = useSession().session?.user.id;
+  const invalidate = useInvalidateProfiles();
+  return useMutation({
+    mutationFn: (input: ProfileUpdate) => updateProfile(userId!, input),
     onSuccess: invalidate,
   });
 }

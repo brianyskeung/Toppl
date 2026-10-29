@@ -15,5 +15,12 @@ function AuthButton() {
 }
 
 export default function AppLayout() {
-  return <Stack screenOptions={{ headerRight: () => <AuthButton /> }} />;
+  const { session } = useSession();
+  return (
+    <Stack screenOptions={{ headerRight: () => <AuthButton /> }}>
+      <Stack.Protected guard={!!session}>
+        <Stack.Screen name="settings/profile" />
+      </Stack.Protected>
+    </Stack>
+  );
 }

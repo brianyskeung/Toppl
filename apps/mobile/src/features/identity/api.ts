@@ -1,5 +1,10 @@
 import { supabase } from '@/lib/supabase';
-import { onboardingSchema, type OnboardingInput } from './schemas';
+import {
+  onboardingSchema,
+  profileUpdateSchema,
+  type OnboardingInput,
+  type ProfileUpdate,
+} from './schemas';
 
 const PUBLIC_PROFILE_COLUMNS = 'id, username, display_name, avatar_path, bio, grade_system';
 
@@ -38,4 +43,16 @@ export async function completeOnboarding(userId: string, input: OnboardingInput)
     .update({ ...values, onboarded_at: new Date().toISOString() })
     .eq('id', userId);
   if (error) throw error;
+}
+
+export async function updateProfile(userId: string, input: ProfileUpdate) {
+  const values = profileUpdateSchema.parse(input);
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(values)
+    .eq('id', userId)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
 }

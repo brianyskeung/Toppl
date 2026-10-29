@@ -40,3 +40,10 @@ export const onboardingSchema = z.object({
   display_name: displayNameSchema,
 });
 export type OnboardingInput = z.input<typeof onboardingSchema>;
+
+export const profileUpdateSchema = z.object({
+  display_name: displayNameSchema,
+  bio: bioSchema,
+  grade_system: gradeSystemSchema,
+});
+export type ProfileUpdate = z.input<typeof profileUpdateSchema>;

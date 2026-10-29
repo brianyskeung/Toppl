@@ -1,4 +1,4 @@
-import { credentialsSchema, passwordSchema, usernameSchema } from '../schemas';
+import { credentialsSchema, passwordSchema, profileUpdateSchema, usernameSchema } from '../schemas';
 
 describe('usernameSchema', () => {
   test.each(['abc', 'sam_sends', 'a1_b2_c3', 'x'.repeat(20)])('accepts %s', (name) => {
@@ -26,4 +26,24 @@ test('credentialsSchema reports the failing field', () => {
   const result = credentialsSchema.safeParse({ username: 'ok_name', password: 'short' });
   expect(result.success).toBe(false);
   expect(result.error?.issues[0].path).toEqual(['password']);
+});
+
+describe('profileUpdateSchema', () => {
+  const valid = { display_name: 'Sam', bio: 'Hi', grade_system: 'font' };
+
+  test('stores empty text as null', () => {
+    expect(profileUpdateSchema.parse({ ...valid, display_name: '  ', bio: '' })).toEqual({
+      display_name: null,
+      bio: null,
+      grade_system: 'font',
+    });
+  });
+
+  test('enforces length limits and known grade systems', () => {
+    expect(profileUpdateSchema.safeParse({ ...valid, display_name: 'x'.repeat(51) }).success).toBe(
+      false,
+    );
+    expect(profileUpdateSchema.safeParse({ ...valid, bio: 'x'.repeat(281) }).success).toBe(false);
+    expect(profileUpdateSchema.safeParse({ ...valid, grade_system: 'yds' }).success).toBe(false);
+  });
 });

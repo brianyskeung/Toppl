@@ -1,8 +1,10 @@
-import { router, Stack } from 'expo-router';
+import { Link, router, Stack } from 'expo-router';
 import { useState } from 'react';
 import { Button, StyleSheet, TextInput, View } from 'react-native';
+import { useSession } from '@/features/identity/session';
 
 export default function Home() {
+  const { session } = useSession();
   const [username, setUsername] = useState('');
   const openProfile = () => {
     const name = username.trim();
@@ -23,6 +25,11 @@ export default function Home() {
         accessibilityLabel="Username to find"
       />
       <Button title="Open profile" onPress={openProfile} />
+      {session ? (
+        <Link href="/settings/profile" asChild>
+          <Button title="Edit profile" />
+        </Link>
+      ) : null}
     </View>
   );
 }
