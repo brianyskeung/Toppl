@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
+import { AvatarPicker } from '@/features/identity/components/AvatarPicker';
 import { ProfileForm } from '@/features/identity/components/ProfileForm';
 import { useMyProfile, useUpdateProfile } from '@/features/identity/hooks';
 
@@ -11,7 +12,10 @@ export default function EditProfile() {
     <ScrollView contentContainerStyle={styles.container}>
       <Stack.Screen options={{ title: 'Edit profile' }} />
       {profile ? (
-        <ProfileForm initial={profile} onSubmit={update.mutateAsync} />
+        <>
+          <AvatarPicker path={profile.avatar_path} />
+          <ProfileForm initial={profile} onSubmit={update.mutateAsync} />
+        </>
       ) : (
         <ActivityIndicator />
       )}

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { completeOnboarding, fetchMyProfile, fetchProfileByUsername, updateProfile } from './api';
+import { pickAndUploadAvatar } from './avatar';
 import { routeState, type RouteState } from './route-state';
 import type { OnboardingInput, ProfileUpdate } from './schemas';
 import { useSession } from './session';
@@ -66,6 +67,15 @@ export function useUpdateProfile() {
   const invalidate = useInvalidateProfiles();
   return useMutation({
     mutationFn: (input: ProfileUpdate) => updateProfile(userId!, input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useChangeAvatar() {
+  const userId = useSession().session?.user.id;
+  const invalidate = useInvalidateProfiles();
+  return useMutation({
+    mutationFn: (previousPath: string | null) => pickAndUploadAvatar(userId!, previousPath),
     onSuccess: invalidate,
   });
 }
