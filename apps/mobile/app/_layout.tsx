@@ -1,18 +1,34 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
-import { SessionProvider, useSession } from '@/features/identity/session';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { useRouteState } from '@/features/identity/hooks';
+import { SessionProvider } from '@/features/identity/session';
 import { queryClient } from '@/lib/query-client';
 
 function RootStack() {
-  const { session, isLoading } = useSession();
-  if (isLoading) return null;
+  const state = useRouteState();
+  if (state === 'loading') return null;
+  if (state === 'error') {
+    return (
+      <View style={styles.center}>
+        <Text>Couldn&apos;t load your profile.</Text>
+        <Button title="Retry" onPress={() => queryClient.refetchQueries()} />
+      </View>
+    );
+  }
 
+  const onboarding = state === 'needs-onboarding';
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="(app)" />
+      <Stack.Protected guard={!onboarding}>
+        <Stack.Screen name="(app)" />
+      </Stack.Protected>
       {/* Signing in removes the auth screens, returning the user to where they were. */}
-      <Stack.Protected guard={!session}>
+      <Stack.Protected guard={state === 'guest'}>
         <Stack.Screen name="(auth)" options={{ presentation: 'modal' }} />
+      </Stack.Protected>
+      <Stack.Protected guard={onboarding}>
+        <Stack.Screen name="(onboarding)" />
       </Stack.Protected>
     </Stack>
   );
@@ -27,3 +43,7 @@ export default function RootLayout() {
     </QueryClientProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 12 },
+});
