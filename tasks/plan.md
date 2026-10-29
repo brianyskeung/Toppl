@@ -56,7 +56,7 @@ Tasks: [todo.md](todo.md)
 
 ### Phase 5: Account management
 - [x] Task 17: Change password, recovery email, and password reset
-- [ ] Task 18: Account deletion
+- [x] Task 18: Account deletion
 
 ### Checkpoint D: identity complete
 - [ ] Every acceptance criterion in SPEC-identity.md checked; full Maestro flow green; manual Apple/Google check on devices

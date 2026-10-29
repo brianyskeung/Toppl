@@ -119,3 +119,10 @@ export async function startRecoverySession(tokens: {
   const { error } = await supabase.auth.setSession(tokens);
   if (error) throw new AuthFormError('This reset link has expired. Request a new one.');
 }
+
+/** Permanently deletes the signed-in user's account, then clears the local session. */
+export async function deleteAccount() {
+  await invoke('delete-account', {});
+  // The server session is gone with the user, so only local state needs clearing.
+  await supabase.auth.signOut({ scope: 'local' });
+}

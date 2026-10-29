@@ -1,0 +1,40 @@
+# Sign up → delete account → the username can be registered again.
+# Needs local Supabase and the app running in a simulator/emulator.
+appId: host.exp.Exponent
+env:
+  USERNAME: e2e_del_${MAESTRO_RUN_ID}
+  PASSWORD: e2e-password
+---
+- launchApp:
+    clearState: true
+- tapOn: Sign in
+- tapOn: Continue with username
+- tapOn: Username
+- inputText: ${USERNAME}
+- tapOn: Password
+- inputText: ${PASSWORD}
+- tapOn:
+    text: Create account
+    index: 1
+- tapOn: Hueco (V-scale)
+- tapOn: Continue
+- tapOn: Account
+- scrollUntilVisible:
+    element: Delete account
+- tapOn: Type your username to confirm
+- inputText: ${USERNAME}
+- tapOn:
+    text: Delete account
+    index: 1
+- assertVisible: Sign in
+# The username is free again.
+- tapOn: Sign in
+- tapOn: Continue with username
+- tapOn: Username
+- inputText: ${USERNAME}
+- tapOn: Password
+- inputText: ${PASSWORD}
+- tapOn:
+    text: Create account
+    index: 1
+- assertVisible: Pick your grade system

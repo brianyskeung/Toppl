@@ -1,12 +1,15 @@
 import { Stack } from 'expo-router';
 import { Button, ScrollView, StyleSheet, Text } from 'react-native';
-import { changePassword, signOut } from '@/features/identity/auth';
+import { changePassword, deleteAccount, signOut } from '@/features/identity/auth';
+import { DeleteAccount } from '@/features/identity/components/DeleteAccount';
 import { NewPasswordForm } from '@/features/identity/components/NewPasswordForm';
 import { RecoveryEmailForm } from '@/features/identity/components/RecoveryEmailForm';
+import { useMyProfile } from '@/features/identity/hooks';
 import { useSession } from '@/features/identity/session';
 
 export default function Account() {
   const user = useSession().session?.user;
+  const { data: profile } = useMyProfile();
   // Recovery email and password only apply to username/password accounts.
   const isUsernameAccount = user?.app_metadata.provider === 'email';
 
@@ -23,6 +26,12 @@ export default function Account() {
       ) : null}
       <Text style={styles.heading}>Session</Text>
       <Button title="Sign out" onPress={() => signOut()} />
+      {profile ? (
+        <>
+          <Text style={styles.heading}>Delete account</Text>
+          <DeleteAccount username={profile.username} onDelete={deleteAccount} />
+        </>
+      ) : null}
     </ScrollView>
   );
 }

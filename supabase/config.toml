@@ -436,3 +436,7 @@ skip_nonce_check = true
 
 [functions.request-password-reset]
 verify_jwt = false
+
+# Checks the caller's token itself, so it also works with non-JWT API keys.
+[functions.delete-account]
+verify_jwt = false
