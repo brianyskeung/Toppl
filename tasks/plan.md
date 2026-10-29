@@ -21,7 +21,7 @@ Tasks: [todo.md](todo.md)
 
 ### Phase 0: Foundation
 - [x] Task 1: Monorepo and Expo app scaffold
-- [ ] Task 2: Local Supabase and app client
+- [x] Task 2: Local Supabase and app client
 - [ ] Task 3: GitHub Actions CI
 
 ### Checkpoint A: Foundation
