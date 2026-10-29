@@ -418,3 +418,6 @@ enabled = true
 # Called by guests; these functions do their own checks.
 [functions.sign-up-username]
 verify_jwt = false
+
+[functions.sign-in-username]
+verify_jwt = false

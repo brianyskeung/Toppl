@@ -33,7 +33,7 @@ Tasks: [todo.md](todo.md)
 
 ### Phase 2: Username/password accounts
 - [x] Task 6: `sign-up-username` Edge Function
-- [ ] Task 7: `sign-in-username` Edge Function
+- [x] Task 7: `sign-in-username` Edge Function
 - [ ] Task 8: Username auth screens and session persistence
 - [ ] Task 9: Auth gate (`useRequireAuth`) and auth sheet
 
