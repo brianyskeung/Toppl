@@ -1,11 +1,15 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Button, Image, StyleSheet, Text, View } from 'react-native';
 import { avatarUrl } from '@/features/identity/api';
 import { useProfile } from '@/features/identity/hooks';
+import { useRequireAuth } from '@/features/identity/use-require-auth';
 
 export default function ProfileScreen() {
   const { username } = useLocalSearchParams<{ username: string }>();
   const { data: profile, isPending, error } = useProfile(username);
+  const requireAuth = useRequireAuth();
+  // shortcut: no-op until the social module adds follows.
+  const follow = requireAuth(() => {});
 
   if (isPending) return <ActivityIndicator style={styles.center} />;
   if (error) return <Text style={styles.center}>Couldn&apos;t load this profile.</Text>;
@@ -24,6 +28,7 @@ export default function ProfileScreen() {
       <Text style={styles.name}>{profile.display_name ?? profile.username}</Text>
       <Text style={styles.username}>@{profile.username}</Text>
       {profile.bio ? <Text>{profile.bio}</Text> : null}
+      <Button title="Follow" onPress={follow} />
     </View>
   );
 }

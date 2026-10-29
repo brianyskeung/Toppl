@@ -35,7 +35,7 @@ Tasks: [todo.md](todo.md)
 - [x] Task 6: `sign-up-username` Edge Function
 - [x] Task 7: `sign-in-username` Edge Function
 - [x] Task 8: Username auth screens and session persistence
-- [ ] Task 9: Auth gate (`useRequireAuth`) and auth sheet
+- [x] Task 9: Auth gate (`useRequireAuth`) and auth sheet
 
 ### Checkpoint B: Accounts work end to end
 - [ ] Maestro: guest browse → write action → sign up → sign out → sign in
