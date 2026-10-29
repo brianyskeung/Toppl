@@ -28,7 +28,7 @@ Tasks: [todo.md](todo.md)
 - [ ] App boots on iOS simulator and Android emulator; CI green on a PR
 
 ### Phase 1: Guest browsing
-- [ ] Task 4: Identity schema, RLS, and pgTAP tests
+- [x] Task 4: Identity schema, RLS, and pgTAP tests
 - [ ] Task 5: Guest app shell and public profile screen
 
 ### Phase 2: Username/password accounts
