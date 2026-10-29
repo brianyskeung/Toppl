@@ -1,15 +1,23 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { completeOnboarding, fetchMyProfile, fetchProfileByUsername, updateProfile } from './api';
+import {
+  completeOnboarding,
+  fetchBodyMeasurements,
+  saveBodyMeasurements,
+  fetchMyProfile,
+  fetchProfileByUsername,
+  updateProfile,
+} from './api';
 import { pickAndUploadAvatar } from './avatar';
 import { routeState, type RouteState } from './route-state';
-import type { OnboardingInput, ProfileUpdate } from './schemas';
+import type { BodyMeasurementsInput, OnboardingInput, ProfileUpdate } from './schemas';
 import { useSession } from './session';
 
 export const profileKeys = {
   all: ['profiles'] as const,
   byUsername: (username: string) => ['profiles', 'username', username.toLowerCase()] as const,
   me: (userId: string) => ['profiles', 'me', userId] as const,
+  body: (userId: string) => ['profiles', 'body', userId] as const,
 };
 
 export function useProfile(username: string) {
@@ -76,6 +84,24 @@ export function useChangeAvatar() {
   const invalidate = useInvalidateProfiles();
   return useMutation({
     mutationFn: (previousPath: string | null) => pickAndUploadAvatar(userId!, previousPath),
+    onSuccess: invalidate,
+  });
+}
+
+export function useBodyMeasurements() {
+  const userId = useSession().session?.user.id;
+  return useQuery({
+    queryKey: profileKeys.body(userId ?? ''),
+    queryFn: () => fetchBodyMeasurements(userId!),
+    enabled: !!userId,
+  });
+}
+
+export function useSaveBodyMeasurements() {
+  const userId = useSession().session?.user.id;
+  const invalidate = useInvalidateProfiles();
+  return useMutation({
+    mutationFn: (input: BodyMeasurementsInput) => saveBodyMeasurements(userId!, input),
     onSuccess: invalidate,
   });
 }

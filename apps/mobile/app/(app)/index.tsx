@@ -30,6 +30,11 @@ export default function Home() {
           <Button title="Edit profile" />
         </Link>
       ) : null}
+      {session ? (
+        <Link href="/settings/body" asChild>
+          <Button title="Body measurements" />
+        </Link>
+      ) : null}
     </View>
   );
 }

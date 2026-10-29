@@ -20,6 +20,7 @@ export default function AppLayout() {
     <Stack screenOptions={{ headerRight: () => <AuthButton /> }}>
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="settings/profile" />
+        <Stack.Screen name="settings/body" />
       </Stack.Protected>
     </Stack>
   );

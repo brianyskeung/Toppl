@@ -1,4 +1,10 @@
-import { credentialsSchema, passwordSchema, profileUpdateSchema, usernameSchema } from '../schemas';
+import {
+  bodyMeasurementsSchema,
+  credentialsSchema,
+  passwordSchema,
+  profileUpdateSchema,
+  usernameSchema,
+} from '../schemas';
 
 describe('usernameSchema', () => {
   test.each(['abc', 'sam_sends', 'a1_b2_c3', 'x'.repeat(20)])('accepts %s', (name) => {
@@ -45,5 +51,28 @@ describe('profileUpdateSchema', () => {
     );
     expect(profileUpdateSchema.safeParse({ ...valid, bio: 'x'.repeat(281) }).success).toBe(false);
     expect(profileUpdateSchema.safeParse({ ...valid, grade_system: 'yds' }).success).toBe(false);
+  });
+});
+
+describe('bodyMeasurementsSchema', () => {
+  test('parses numbers and treats empty as null', () => {
+    expect(bodyMeasurementsSchema.parse({ height_cm: ' 175 ', ape_index_cm: '' })).toEqual({
+      height_cm: 175,
+      ape_index_cm: null,
+    });
+    expect(bodyMeasurementsSchema.parse({ height_cm: '100', ape_index_cm: '-30' })).toEqual({
+      height_cm: 100,
+      ape_index_cm: -30,
+    });
+  });
+
+  test.each([
+    { height_cm: '99', ape_index_cm: '' },
+    { height_cm: '251', ape_index_cm: '' },
+    { height_cm: '', ape_index_cm: '31' },
+    { height_cm: '170.5', ape_index_cm: '' },
+    { height_cm: 'tall', ape_index_cm: '' },
+  ])('rejects %j', (input) => {
+    expect(bodyMeasurementsSchema.safeParse(input).success).toBe(false);
   });
 });

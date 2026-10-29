@@ -1,7 +1,9 @@
 import { supabase } from '@/lib/supabase';
 import {
+  bodyMeasurementsSchema,
   onboardingSchema,
   profileUpdateSchema,
+  type BodyMeasurementsInput,
   type OnboardingInput,
   type ProfileUpdate,
 } from './schemas';
@@ -55,4 +57,21 @@ export async function updateProfile(userId: string, input: ProfileUpdate) {
     .single();
   if (error) throw error;
   return data;
+}
+
+/** Owner-only height and ape index (RLS hides other users' rows). */
+export async function fetchBodyMeasurements(userId: string) {
+  const { data, error } = await supabase
+    .from('profile_private')
+    .select('height_cm, ape_index_cm')
+    .eq('id', userId)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}
+
+export async function saveBodyMeasurements(userId: string, input: BodyMeasurementsInput) {
+  const values = bodyMeasurementsSchema.parse(input);
+  const { error } = await supabase.from('profile_private').upsert({ id: userId, ...values });
+  if (error) throw error;
 }

@@ -47,3 +47,24 @@ export const profileUpdateSchema = z.object({
   grade_system: gradeSystemSchema,
 });
 export type ProfileUpdate = z.input<typeof profileUpdateSchema>;
+
+/** Optional whole number typed into a text field: empty means null. */
+const optionalInt = (min: number, max: number, label: string) =>
+  z
+    .string()
+    .trim()
+    .transform((v) => (v === '' ? null : Number(v)))
+    .pipe(
+      z
+        .number(`${label} must be a number.`)
+        .int(`${label} must be a whole number.`)
+        .min(min, `${label} must be between ${min} and ${max}.`)
+        .max(max, `${label} must be between ${min} and ${max}.`)
+        .nullable(),
+    );
+
+export const bodyMeasurementsSchema = z.object({
+  height_cm: optionalInt(100, 250, 'Height'),
+  ape_index_cm: optionalInt(-30, 30, 'Ape index'),
+});
+export type BodyMeasurementsInput = z.input<typeof bodyMeasurementsSchema>;

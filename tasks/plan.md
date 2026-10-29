@@ -44,7 +44,7 @@ Tasks: [todo.md](todo.md)
 - [x] Task 10: Onboarding route guard and grade-system screen
 - [x] Task 11: Edit profile screen
 - [x] Task 12: Avatar upload
-- [ ] Task 13: Private body measurements screen
+- [x] Task 13: Private body measurements screen
 
 ### Checkpoint C: Profile complete
 - [ ] All profile acceptance criteria pass; review with human
