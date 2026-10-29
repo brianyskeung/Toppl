@@ -1,6 +1,7 @@
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { supabase } from '@/lib/supabase';
-import { AuthFormError, signInWithApple } from '../auth';
+import { AuthFormError, signInWithApple, signInWithGoogle } from '../auth';
 
 jest.mock('@/lib/supabase', () => ({
   supabase: { auth: { signInWithIdToken: jest.fn() } },
@@ -8,6 +9,11 @@ jest.mock('@/lib/supabase', () => ({
 jest.mock('expo-apple-authentication', () => ({
   signInAsync: jest.fn(),
   AppleAuthenticationScope: { FULL_NAME: 0, EMAIL: 1 },
+}));
+
+jest.mock('@react-native-google-signin/google-signin', () => ({
+  GoogleSignin: { configure: jest.fn(), hasPlayServices: jest.fn(), signIn: jest.fn() },
+  isSuccessResponse: (r: { type: string }) => r.type === 'success',
 }));
 
 const signInWithIdToken = jest.mocked(supabase.auth.signInWithIdToken);
@@ -35,5 +41,22 @@ describe('signInWithApple', () => {
     appleSignIn.mockResolvedValue({ identityToken: 'apple-token' } as never);
     signInWithIdToken.mockResolvedValue({ error: new Error('provider disabled') } as never);
     await expect(signInWithApple()).rejects.toBeInstanceOf(AuthFormError);
+  });
+});
+
+describe('signInWithGoogle', () => {
+  const googleSignIn = jest.mocked(GoogleSignin.signIn);
+
+  test('exchanges the Google ID token for a Supabase session', async () => {
+    googleSignIn.mockResolvedValue({ type: 'success', data: { idToken: 'google-token' } } as never);
+    signInWithIdToken.mockResolvedValue({ error: null } as never);
+    await expect(signInWithGoogle()).resolves.toBe(true);
+    expect(signInWithIdToken).toHaveBeenCalledWith({ provider: 'google', token: 'google-token' });
+  });
+
+  test('returns false without an error when the dialog is cancelled', async () => {
+    googleSignIn.mockResolvedValue({ type: 'cancelled', data: null } as never);
+    await expect(signInWithGoogle()).resolves.toBe(false);
+    expect(signInWithIdToken).not.toHaveBeenCalled();
   });
 });

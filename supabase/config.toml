@@ -423,3 +423,12 @@ verify_jwt = false
 
 [functions.sign-in-username]
 verify_jwt = false
+
+# Native Google sign-in: client_id lists the web client first, then the iOS client.
+# Enable once Google setup is done (see tasks/identity-device-setup.local.md).
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
+# iOS native sign-in tokens carry a nonce Supabase can't check.
+skip_nonce_check = true

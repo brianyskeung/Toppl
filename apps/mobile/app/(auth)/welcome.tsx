@@ -1,6 +1,7 @@
 import { Link, router, Stack } from 'expo-router';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { AppleSignInButton } from '@/features/identity/components/AppleSignInButton';
+import { GoogleSignInButton } from '@/features/identity/components/GoogleSignInButton';
 
 export default function Welcome() {
   return (
@@ -8,6 +9,7 @@ export default function Welcome() {
       <Stack.Screen options={{ title: 'Welcome to toppl' }} />
       <Text style={styles.lead}>Sign in to set, log and follow climbs.</Text>
       <AppleSignInButton />
+      <GoogleSignInButton />
       <Link href="/username" asChild>
         <Button title="Continue with username" />
       </Link>
