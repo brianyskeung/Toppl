@@ -20,7 +20,7 @@ Tasks: [todo.md](todo.md)
 ## Task List
 
 ### Phase 0: Foundation
-- [ ] Task 1: Monorepo and Expo app scaffold
+- [x] Task 1: Monorepo and Expo app scaffold
 - [ ] Task 2: Local Supabase and app client
 - [ ] Task 3: GitHub Actions CI
 

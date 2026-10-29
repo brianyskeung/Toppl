@@ -1,0 +1,15 @@
+packages:
+  - apps/*
+
+nodeLinker: hoisted
+
+# Prebuilt binaries cover both; their install scripts are not needed.
+allowBuilds:
+  "@parcel/watcher": false
+  unrs-resolver: false
+
+minimumReleaseAgeExclude:
+  - "@expo/require-utils@58.0.5"
+  - expo-constants@58.0.14
+  - expo-linking@58.0.15
+  - expo-router@58.0.28
