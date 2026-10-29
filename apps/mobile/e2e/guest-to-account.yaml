@@ -28,6 +28,7 @@ env:
     commands:
       - tapOn: Hueco (V-scale)
       - tapOn: Continue
+- tapOn: Account
 - tapOn: Sign out
 - tapOn: Sign in
 - tapOn: Continue with username
@@ -39,4 +40,4 @@ env:
 - tapOn:
     text: Sign in
     index: 1
-- assertVisible: Sign out
+- assertVisible: Account

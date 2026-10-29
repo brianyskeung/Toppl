@@ -30,6 +30,7 @@ function RootStack() {
       <Stack.Protected guard={onboarding}>
         <Stack.Screen name="(onboarding)" />
       </Stack.Protected>
+      <Stack.Screen name="reset-password" />
     </Stack>
   );
 }

@@ -1,13 +1,14 @@
 import { Link, Stack } from 'expo-router';
 import { Button } from 'react-native';
-import { signOut } from '@/features/identity/auth';
 import { useSession } from '@/features/identity/session';
 
-function AuthButton() {
+function HeaderButton() {
   const { session } = useSession();
-  // shortcut: temporary sign-out here until settings/account exists (Task 17).
-  if (session) return <Button title="Sign out" onPress={() => signOut()} />;
-  return (
+  return session ? (
+    <Link href="/settings/account" asChild>
+      <Button title="Account" />
+    </Link>
+  ) : (
     <Link href="/welcome" asChild>
       <Button title="Sign in" />
     </Link>
@@ -17,10 +18,11 @@ function AuthButton() {
 export default function AppLayout() {
   const { session } = useSession();
   return (
-    <Stack screenOptions={{ headerRight: () => <AuthButton /> }}>
+    <Stack screenOptions={{ headerRight: () => <HeaderButton /> }}>
       <Stack.Protected guard={!!session}>
         <Stack.Screen name="settings/profile" />
         <Stack.Screen name="settings/body" />
+        <Stack.Screen name="settings/account" />
       </Stack.Protected>
     </Stack>
   );

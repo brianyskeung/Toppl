@@ -68,3 +68,20 @@ export const bodyMeasurementsSchema = z.object({
   ape_index_cm: optionalInt(-30, 30, 'Ape index'),
 });
 export type BodyMeasurementsInput = z.input<typeof bodyMeasurementsSchema>;
+
+export const recoveryEmailSchema = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .pipe(z.email('Enter a valid email address.'));
+
+export const newPasswordSchema = z
+  .object({ password: passwordSchema, confirm: z.string() })
+  .refine((v) => v.password === v.confirm, {
+    message: 'Passwords do not match.',
+    path: ['confirm'],
+  });
+
+/** Whether an auth email is the hidden placeholder given to username accounts. */
+export const isPlaceholderEmail = (email: string | undefined) =>
+  !email || email.endsWith('.invalid');

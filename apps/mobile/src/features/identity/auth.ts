@@ -86,3 +86,36 @@ export async function signInWithGoogle() {
     throw e instanceof AuthFormError ? e : new AuthFormError('Google sign-in failed. Try again.');
   }
 }
+
+export async function requestPasswordReset(username: string) {
+  const { message } = await invoke<{ message: string }>('request-password-reset', { username });
+  return message;
+}
+
+export async function changePassword(password: string) {
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) throw new AuthFormError(error.message, 'password');
+}
+
+/** Sends a confirmation link; once confirmed the address replaces the account's auth email. */
+export async function setRecoveryEmail(email: string) {
+  const { error } = await supabase.auth.updateUser({ email });
+  if (error) throw new AuthFormError(error.message);
+}
+
+/** Reads the session tokens (or error) Supabase puts in the fragment of a recovery link. */
+export function parseRecoveryLink(url: string) {
+  const params = new URLSearchParams(url.split('#')[1] ?? '');
+  const access_token = params.get('access_token');
+  const refresh_token = params.get('refresh_token');
+  if (access_token && refresh_token) return { tokens: { access_token, refresh_token } };
+  return { error: params.get('error_description') ?? 'This reset link is invalid.' };
+}
+
+export async function startRecoverySession(tokens: {
+  access_token: string;
+  refresh_token: string;
+}) {
+  const { error } = await supabase.auth.setSession(tokens);
+  if (error) throw new AuthFormError('This reset link has expired. Request a new one.');
+}

@@ -1,7 +1,7 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { supabase } from '@/lib/supabase';
-import { AuthFormError, signInWithApple, signInWithGoogle } from '../auth';
+import { AuthFormError, parseRecoveryLink, signInWithApple, signInWithGoogle } from '../auth';
 
 jest.mock('@/lib/supabase', () => ({
   supabase: { auth: { signInWithIdToken: jest.fn() } },
@@ -58,5 +58,27 @@ describe('signInWithGoogle', () => {
     googleSignIn.mockResolvedValue({ type: 'cancelled', data: null } as never);
     await expect(signInWithGoogle()).resolves.toBe(false);
     expect(signInWithIdToken).not.toHaveBeenCalled();
+  });
+});
+
+describe('parseRecoveryLink', () => {
+  test('reads tokens from the fragment', () => {
+    expect(
+      parseRecoveryLink('toppl://reset-password#access_token=a&refresh_token=r&type=recovery'),
+    ).toEqual({ tokens: { access_token: 'a', refresh_token: 'r' } });
+  });
+
+  test('reports an expired link', () => {
+    expect(
+      parseRecoveryLink(
+        'toppl://reset-password#error=access_denied&error_description=Link+expired',
+      ),
+    ).toEqual({ error: 'Link expired' });
+  });
+
+  test('rejects a link without tokens', () => {
+    expect(parseRecoveryLink('toppl://reset-password')).toEqual({
+      error: 'This reset link is invalid.',
+    });
   });
 });

@@ -1,4 +1,7 @@
 import {
+  isPlaceholderEmail,
+  newPasswordSchema,
+  recoveryEmailSchema,
   bodyMeasurementsSchema,
   credentialsSchema,
   passwordSchema,
@@ -74,5 +77,29 @@ describe('bodyMeasurementsSchema', () => {
     { height_cm: 'tall', ape_index_cm: '' },
   ])('rejects %j', (input) => {
     expect(bodyMeasurementsSchema.safeParse(input).success).toBe(false);
+  });
+});
+
+describe('account schemas', () => {
+  test('recovery email is validated and normalized', () => {
+    expect(recoveryEmailSchema.parse(' Climber@Example.com ')).toBe('climber@example.com');
+    expect(recoveryEmailSchema.safeParse('not-an-email').success).toBe(false);
+  });
+
+  test('new password must be valid and confirmed', () => {
+    expect(
+      newPasswordSchema.safeParse({ password: 'long-enough', confirm: 'long-enough' }).success,
+    ).toBe(true);
+    const mismatch = newPasswordSchema.safeParse({ password: 'long-enough', confirm: 'different' });
+    expect(mismatch.error?.issues[0].path).toEqual(['confirm']);
+    expect(newPasswordSchema.safeParse({ password: 'short', confirm: 'short' }).success).toBe(
+      false,
+    );
+  });
+
+  test('placeholder emails are recognised', () => {
+    expect(isPlaceholderEmail('abc@users.toppl.invalid')).toBe(true);
+    expect(isPlaceholderEmail(undefined)).toBe(true);
+    expect(isPlaceholderEmail('climber@example.com')).toBe(false);
   });
 });

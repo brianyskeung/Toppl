@@ -55,7 +55,7 @@ Tasks: [todo.md](todo.md)
 - [x] Task 16: Google sign-in
 
 ### Phase 5: Account management
-- [ ] Task 17: Change password, recovery email, and password reset
+- [x] Task 17: Change password, recovery email, and password reset
 - [ ] Task 18: Account deletion
 
 ### Checkpoint D: identity complete

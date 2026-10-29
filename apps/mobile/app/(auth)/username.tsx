@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { AuthFormError, signInWithUsername, signUpWithUsername } from '@/features/identity/auth';
@@ -73,6 +73,11 @@ export default function UsernameAuth() {
         <ActivityIndicator />
       ) : (
         <Button title={signingUp ? 'Create account' : 'Sign in'} onPress={submit} />
+      )}
+      {signingUp ? null : (
+        <Link href="/forgot-password" asChild>
+          <Button title="Forgot password?" />
+        </Link>
       )}
       <Button
         title={signingUp ? 'I already have an account' : 'Create a new account'}
