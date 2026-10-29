@@ -1,11 +1,13 @@
 import { Link, router, Stack } from 'expo-router';
 import { Button, StyleSheet, Text, View } from 'react-native';
+import { AppleSignInButton } from '@/features/identity/components/AppleSignInButton';
 
 export default function Welcome() {
   return (
     <View style={styles.container}>
       <Stack.Screen options={{ title: 'Welcome to toppl' }} />
       <Text style={styles.lead}>Sign in to set, log and follow climbs.</Text>
+      <AppleSignInButton />
       <Link href="/username" asChild>
         <Button title="Continue with username" />
       </Link>

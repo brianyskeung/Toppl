@@ -51,7 +51,7 @@ Tasks: [todo.md](todo.md)
 
 ### Phase 4: Other sign-in methods
 - [x] Task 14: Username step in onboarding (for Apple/Google users)
-- [ ] Task 15: Sign in with Apple
+- [x] Task 15: Sign in with Apple
 - [ ] Task 16: Google sign-in
 
 ### Phase 5: Account management

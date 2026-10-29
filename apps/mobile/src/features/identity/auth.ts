@@ -1,3 +1,4 @@
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { FunctionsHttpError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 import type { Credentials } from './schemas';
@@ -39,4 +40,26 @@ export async function signUpWithUsername(credentials: Credentials) {
 export async function signOut() {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
+}
+
+/** Native Sign in with Apple (iOS only). Returns false if the user cancelled. */
+export async function signInWithApple() {
+  try {
+    const credential = await AppleAuthentication.signInAsync({
+      requestedScopes: [
+        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.EMAIL,
+      ],
+    });
+    if (!credential.identityToken) throw new AuthFormError('Apple sign-in failed. Try again.');
+    const { error } = await supabase.auth.signInWithIdToken({
+      provider: 'apple',
+      token: credential.identityToken,
+    });
+    if (error) throw new AuthFormError('Apple sign-in failed. Try again.');
+    return true;
+  } catch (e) {
+    if ((e as { code?: string }).code === 'ERR_REQUEST_CANCELED') return false;
+    throw e instanceof AuthFormError ? e : new AuthFormError('Apple sign-in failed. Try again.');
+  }
 }
