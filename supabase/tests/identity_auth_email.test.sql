@@ -14,7 +14,7 @@ select is(
   'confirmed email change updates the login mapping');
 
 update auth.users set email = 'other@example.com' where id = 'bbbbbbbb-0000-0000-0000-000000000002';
-select is((select count(*)::int from public.username_logins), 1,
+select is((select count(*)::int from public.username_logins where user_id = 'bbbbbbbb-0000-0000-0000-000000000002'), 0,
   'users without a username login are unaffected');
 
 update auth.users set phone = '123' where id = 'aaaaaaaa-0000-0000-0000-000000000001';
