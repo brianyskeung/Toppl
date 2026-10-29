@@ -29,7 +29,7 @@ Tasks: [todo.md](todo.md)
 
 ### Phase 1: Guest browsing
 - [x] Task 4: Identity schema, RLS, and pgTAP tests
-- [ ] Task 5: Guest app shell and public profile screen
+- [x] Task 5: Guest app shell and public profile screen
 
 ### Phase 2: Username/password accounts
 - [ ] Task 6: `sign-up-username` Edge Function
