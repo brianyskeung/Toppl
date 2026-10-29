@@ -32,7 +32,7 @@ Tasks: [todo.md](todo.md)
 - [x] Task 5: Guest app shell and public profile screen
 
 ### Phase 2: Username/password accounts
-- [ ] Task 6: `sign-up-username` Edge Function
+- [x] Task 6: `sign-up-username` Edge Function
 - [ ] Task 7: `sign-in-username` Edge Function
 - [ ] Task 8: Username auth screens and session persistence
 - [ ] Task 9: Auth gate (`useRequireAuth`) and auth sheet
