@@ -22,7 +22,7 @@ Tasks: [todo.md](todo.md)
 ### Phase 0: Foundation
 - [x] Task 1: Monorepo and Expo app scaffold
 - [x] Task 2: Local Supabase and app client
-- [ ] Task 3: GitHub Actions CI
+- [x] Task 3: GitHub Actions CI
 
 ### Checkpoint A: Foundation
 - [ ] App boots on iOS simulator and Android emulator; CI green on a PR
