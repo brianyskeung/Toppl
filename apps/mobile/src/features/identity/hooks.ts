@@ -2,10 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import {
   completeOnboarding,
+  createProfile,
   fetchBodyMeasurements,
-  saveBodyMeasurements,
   fetchMyProfile,
   fetchProfileByUsername,
+  saveBodyMeasurements,
   updateProfile,
 } from './api';
 import { pickAndUploadAvatar } from './avatar';
@@ -102,6 +103,15 @@ export function useSaveBodyMeasurements() {
   const invalidate = useInvalidateProfiles();
   return useMutation({
     mutationFn: (input: BodyMeasurementsInput) => saveBodyMeasurements(userId!, input),
+    onSuccess: invalidate,
+  });
+}
+
+export function useCreateProfile() {
+  const userId = useSession().session?.user.id;
+  const invalidate = useInvalidateProfiles();
+  return useMutation({
+    mutationFn: (username: string) => createProfile(userId!, username),
     onSuccess: invalidate,
   });
 }

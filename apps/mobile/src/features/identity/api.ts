@@ -6,6 +6,7 @@ import {
   type BodyMeasurementsInput,
   type OnboardingInput,
   type ProfileUpdate,
+  usernameSchema,
 } from './schemas';
 
 const PUBLIC_PROFILE_COLUMNS = 'id, username, display_name, avatar_path, bio, grade_system';
@@ -73,5 +74,20 @@ export async function fetchBodyMeasurements(userId: string) {
 export async function saveBodyMeasurements(userId: string, input: BodyMeasurementsInput) {
   const values = bodyMeasurementsSchema.parse(input);
   const { error } = await supabase.from('profile_private').upsert({ id: userId, ...values });
+  if (error) throw error;
+}
+
+export class UsernameTakenError extends Error {
+  constructor() {
+    super('That username is taken.');
+  }
+}
+
+/** Creates the profile for a user who signed in without choosing a username (Apple, Google). */
+export async function createProfile(userId: string, username: string) {
+  const { error } = await supabase
+    .from('profiles')
+    .insert({ id: userId, username: usernameSchema.parse(username) });
+  if (error?.code === '23505') throw new UsernameTakenError();
   if (error) throw error;
 }

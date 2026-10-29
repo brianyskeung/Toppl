@@ -1,4 +1,5 @@
-export type RouteState = 'loading' | 'error' | 'guest' | 'needs-onboarding' | 'ready';
+export type RouteState =
+  'loading' | 'error' | 'guest' | 'needs-username' | 'needs-onboarding' | 'ready';
 
 type Input = {
   sessionLoading: boolean;
@@ -7,7 +8,10 @@ type Input = {
   profile: { onboarded_at: string | null } | null | undefined;
 };
 
-/** Decides which part of the app a user may see. Missing or unfinished profiles need onboarding. */
+/**
+ * Decides which part of the app a user may see. Apple/Google sign-ups have no profile until they
+ * pick a username; profiles without onboarded_at still need the grade-system step.
+ */
 export function routeState({
   sessionLoading,
   hasSession,
@@ -18,6 +22,7 @@ export function routeState({
   if (!hasSession) return 'guest';
   if (profileStatus === 'pending') return 'loading';
   if (profileStatus === 'error') return 'error';
-  if (!profile || !profile.onboarded_at) return 'needs-onboarding';
+  if (!profile) return 'needs-username';
+  if (!profile.onboarded_at) return 'needs-onboarding';
   return 'ready';
 }

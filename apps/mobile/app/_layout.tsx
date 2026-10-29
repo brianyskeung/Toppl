@@ -17,7 +17,7 @@ function RootStack() {
     );
   }
 
-  const onboarding = state === 'needs-onboarding';
+  const onboarding = state === 'needs-username' || state === 'needs-onboarding';
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Protected guard={!onboarding}>

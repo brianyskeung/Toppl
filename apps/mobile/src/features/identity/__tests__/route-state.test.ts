@@ -15,7 +15,7 @@ test.each([
     'loading',
   ],
   ['profile failed', { ...base, profileStatus: 'error' as const, profile: undefined }, 'error'],
-  ['no profile', { ...base, profile: null }, 'needs-onboarding'],
+  ['no profile (Apple/Google sign-up)', { ...base, profile: null }, 'needs-username'],
   ['not onboarded', { ...base, profile: { onboarded_at: null } }, 'needs-onboarding'],
   ['onboarded', { ...base, profile: { onboarded_at: '2026-10-28T00:00:00Z' } }, 'ready'],
 ])('%s → %s', (_name, input, expected) => {
