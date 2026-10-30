@@ -20,43 +20,43 @@ Tasks: [todo.md](todo.md)
 ## Task List
 
 ### Phase 0: Foundation
-- [ ] Task 1: Monorepo and Expo app scaffold
-- [ ] Task 2: Local Supabase and app client
-- [ ] Task 3: GitHub Actions CI
+- [x] Task 1: Monorepo and Expo app scaffold
+- [x] Task 2: Local Supabase and app client
+- [x] Task 3: GitHub Actions CI
 
 ### Checkpoint A: Foundation
 - [ ] App boots on iOS simulator and Android emulator; CI green on a PR
 
 ### Phase 1: Guest browsing
-- [ ] Task 4: Identity schema, RLS, and pgTAP tests
-- [ ] Task 5: Guest app shell and public profile screen
+- [x] Task 4: Identity schema, RLS, and pgTAP tests
+- [x] Task 5: Guest app shell and public profile screen
 
 ### Phase 2: Username/password accounts
-- [ ] Task 6: `sign-up-username` Edge Function
-- [ ] Task 7: `sign-in-username` Edge Function
-- [ ] Task 8: Username auth screens and session persistence
-- [ ] Task 9: Auth gate (`useRequireAuth`) and auth sheet
+- [x] Task 6: `sign-up-username` Edge Function
+- [x] Task 7: `sign-in-username` Edge Function
+- [x] Task 8: Username auth screens and session persistence
+- [x] Task 9: Auth gate (`useRequireAuth`) and auth sheet
 
 ### Checkpoint B: Accounts work end to end
 - [ ] Maestro: guest browse → write action → sign up → sign out → sign in
 
 ### Phase 3: Onboarding and profile
-- [ ] Task 10: Onboarding route guard and grade-system screen
-- [ ] Task 11: Edit profile screen
-- [ ] Task 12: Avatar upload
-- [ ] Task 13: Private body measurements screen
+- [x] Task 10: Onboarding route guard and grade-system screen
+- [x] Task 11: Edit profile screen
+- [x] Task 12: Avatar upload
+- [x] Task 13: Private body measurements screen
 
 ### Checkpoint C: Profile complete
 - [ ] All profile acceptance criteria pass; review with human
 
 ### Phase 4: Other sign-in methods
-- [ ] Task 14: Username step in onboarding (for Apple/Google users)
-- [ ] Task 15: Sign in with Apple
-- [ ] Task 16: Google sign-in
+- [x] Task 14: Username step in onboarding (for Apple/Google users)
+- [x] Task 15: Sign in with Apple
+- [x] Task 16: Google sign-in
 
 ### Phase 5: Account management
-- [ ] Task 17: Change password, recovery email, and password reset
-- [ ] Task 18: Account deletion
+- [x] Task 17: Change password, recovery email, and password reset
+- [x] Task 18: Account deletion
 
 ### Checkpoint D: identity complete
 - [ ] Every acceptance criterion in SPEC-identity.md checked; full Maestro flow green; manual Apple/Google check on devices

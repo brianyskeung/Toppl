@@ -1,0 +1,43 @@
+# Guest browse → gated tap → sign up → sign out → sign in.
+# Needs local Supabase with seed data and the app running in a simulator/emulator.
+appId: host.exp.Exponent
+env:
+  USERNAME: e2e_${MAESTRO_RUN_ID}
+  PASSWORD: e2e-password
+---
+- launchApp:
+    clearState: true
+- tapOn: Username to find
+- inputText: sam_sends
+- tapOn: Open profile
+- assertVisible: '@sam_sends'
+- tapOn: Follow
+- assertVisible: Welcome to toppl
+- tapOn: Continue with username
+- tapOn: Username
+- inputText: ${USERNAME}
+- tapOn: Password
+- inputText: ${PASSWORD}
+- tapOn:
+    text: Create account
+    index: 1
+# New accounts go through onboarding before returning to the app.
+- runFlow:
+    when:
+      visible: Pick your grade system
+    commands:
+      - tapOn: Hueco (V-scale)
+      - tapOn: Continue
+- tapOn: Account
+- tapOn: Sign out
+- tapOn: Sign in
+- tapOn: Continue with username
+- tapOn: I already have an account
+- tapOn: Username
+- inputText: ${USERNAME}
+- tapOn: Password
+- inputText: ${PASSWORD}
+- tapOn:
+    text: Sign in
+    index: 1
+- assertVisible: Account
